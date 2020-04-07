@@ -151,7 +151,7 @@ class RunnerHTTPRequestHandler(BaseHTTPRequestHandler):
         finally:
             shutil.rmtree(tempDir)
             print('[%s] remove temp dir: %s' % (lang, tempDir))
-            print('[%s] executed in %s.' % (time.time() - start))
+            print('[%s] executed in %s.' % (lang, time.time() - start))
         self.sendResponse(result)
 
     def responseError(self, errorCode, body=None):
