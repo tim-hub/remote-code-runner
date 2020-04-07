@@ -1,0 +1,33 @@
+{
+    "ip": "$RCR_IP",
+    "port": "$RCR_PORT",
+    "tempdir": "/tmp/remote-code-runner/t",
+    "docker": "sudo docker run -t --rm -v %s:/app $RCR_IMAGE %s",
+    "timeout": "$RCR_TIMEOUT",
+    "languages": {
+        "java": {
+            "file": "Main.java",
+            "command": "java --source 14 --enable-preview -XX:+ShowCodeDetailsInExceptionMessages Main.java"
+        },
+        "python": {
+            "file": "main.py",
+            "command": "python3 -B main.py"
+        },
+        "ruby": {
+            "file": "main.rb",
+            "command": "ruby main.rb"
+        },
+        "node": {
+            "file": "main.js",
+            "command": "node main.js"
+        },
+        "scheme": {
+            "file": "main.ss",
+            "command": "scheme main.ss"
+        },
+        "c": {
+            "file": "main.c",
+            "command": "gcc -Wall -o main main.c && ./main"
+        }
+    }
+}
