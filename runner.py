@@ -35,8 +35,7 @@ APP_DIR = os.path.dirname(__file__)
 os.environ.setdefault('RCR_IP', '127.0.0.1')
 os.environ.setdefault('RCR_PORT', '8080')
 os.environ.setdefault('RCR_TIMEOUT', '3')
-os.environ.setdefault('RCR_TEMP', '/tmp/remote-code-runner/t')
-os.environ.setdefault('RCR_IMAGE', 'remote-code-runner:latest')
+os.environ.setdefault('RCR_TEMP', '/tmp/remote-code-runner')
 
 with open(os.path.join(APP_DIR, 'config.json'), 'r', encoding='utf-8') as f:
     CONFIG = json.load(f, object_hook=configHook)
@@ -141,7 +140,8 @@ class RunnerHTTPRequestHandler(BaseHTTPRequestHandler):
             # execute:
             cmd = CONFIG.languages[lang].command
             if 'docker' in CONFIG:
-                cmd = CONFIG.docker % (tempDir, cmd)
+                img = CONFIG.languages[lang].image
+                cmd = CONFIG.docker % (tempDir, img, cmd)
             print('[%s] command: %s' % (lang, cmd))
             result = run(cmd.split(' '), cwd=tempDir)
             #
