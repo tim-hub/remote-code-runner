@@ -11,8 +11,6 @@ RUN apt-get update \
   && ln -s lua5.3 lua \
   && ln -s chezscheme9.5 scheme
 
-RUN apt-get 
-
 # install java 14 at /opt/jdk-14 and link to /usr/bin/java
 
 RUN cd /opt \
