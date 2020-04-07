@@ -101,7 +101,7 @@ def nextId():
 
 def run(cmd, cwd, timeout):
     try:
-        output = subprocess.check_output(cmd, cwd=cwd, stderr=subprocess.STDOUT, timeout=timeout)
+        output = subprocess.check_output(cmd.split(' '), cwd=cwd, stderr=subprocess.STDOUT, timeout=timeout)
     except subprocess.TimeoutExpired:
         return dict(error=False, timeout=True, output='')
     except subprocess.CalledProcessError as e:
