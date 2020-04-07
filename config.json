@@ -1,7 +1,7 @@
 {
     "ip": "$RCR_IP",
     "port": "$RCR_PORT",
-    "tempdir": "/tmp/remote-code-runner/t",
+    "tempdir": "$RCR_TEMP",
     "docker": "sudo docker run -t --rm -v %s:/app $RCR_IMAGE %s",
     "timeout": "$RCR_TIMEOUT",
     "languages": {

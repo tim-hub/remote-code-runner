@@ -35,6 +35,7 @@ APP_DIR = os.path.dirname(__file__)
 os.environ.setdefault('RCR_IP', '127.0.0.1')
 os.environ.setdefault('RCR_PORT', '8080')
 os.environ.setdefault('RCR_TIMEOUT', '3')
+os.environ.setdefault('RCR_TEMP', '/tmp/remote-code-runner/t')
 os.environ.setdefault('RCR_IMAGE', 'remote-code-runner:latest')
 
 with open(os.path.join(APP_DIR, 'config.json'), 'r', encoding='utf-8') as f:
