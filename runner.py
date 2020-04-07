@@ -99,9 +99,11 @@ def nextId():
         globalIdCounter += 1
         return globalIdCounter
 
-def run(cmd, cwd):
+def run(cmd, cwd, timeout):
     try:
-        output = subprocess.check_output(cmd, cwd=cwd, stderr=subprocess.STDOUT, timeout=int(CONFIG.timeout))
+        output = subprocess.check_output(cmd, cwd=cwd, stderr=subprocess.STDOUT, timeout=timeout)
+    except subprocess.TimeoutExpired:
+        return dict(error=False, timeout=True, output='')
     except subprocess.CalledProcessError as e:
         return dict(error=True, timeout=False, output=decode(e.output))
     return dict(error=False, timeout=False, output=decode(output))
@@ -129,26 +131,27 @@ class RunnerHTTPRequestHandler(BaseHTTPRequestHandler):
         code = body['code']
         if not lang in CONFIG.languages:
             raise KeyError('language not found: ' + lang)
+        start = time.time()
         print('[%s] prepare...' % lang)
         tempDir = self.createTempDir()
         print('[%s] create temp dir: %s' % (lang, tempDir))
         try:
-            tempFile = os.path.join(tempDir, CONFIG.languages[lang].file)
+            cfg = CONFIG.languages[lang]
+            tempFile = os.path.join(tempDir, cfg.file)
             with open(tempFile, 'w', encoding='utf-8') as f:
                 f.write(code)
             print('[%s] write file: %s' % (lang, tempFile))
             # execute:
-            cmd = CONFIG.languages[lang].command
+            cmd = 'timeout %s %s' % (CONFIG.timeout, cfg.command)
             if 'docker' in CONFIG:
-                img = CONFIG.languages[lang].image
+                img = cfg.image
                 cmd = CONFIG.docker % (tempDir, img, cmd)
             print('[%s] command: %s' % (lang, cmd))
-            result = run(cmd.split(' '), cwd=tempDir)
-        except subprocess.TimeoutExpired:
-            result = dict(timeout=True, error=False, output='')
+            result = run(cmd, tempDir, int(CONFIG.timeout))
         finally:
             shutil.rmtree(tempDir)
             print('[%s] remove temp dir: %s' % (lang, tempDir))
+            print('[%s] executed in %s.' % (time.time() - start))
         self.sendResponse(result)
 
     def responseError(self, errorCode, body=None):
