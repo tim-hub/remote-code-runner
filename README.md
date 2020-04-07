@@ -7,11 +7,11 @@ Remote Code Runner is a simple service for running code on remote server side.
 Environment:
 
 - Ubuntu Linux 18.04
-- Docker
-- Python3
+- Docker 19.x
+- Python 3.8
 
 ```
-$ sudo apt install git docker.io python3
+$ sudo apt install git docker.io python3.8
 ```
 
 Get source:
@@ -23,7 +23,7 @@ $ git clone https://github.com/michaelliao/remote-code-runner.git
 Download required docker images:
 
 ```
-$ python3 list_images.py
+$ python3.8 list_images.py
 sudo docker run -t --rm openjdk:14-slim ls
 sudo docker run -t --rm python:3.8-slim ls
 sudo docker run -t --rm ruby:2.7-slim ls
@@ -36,7 +36,7 @@ Copy and execute the output commands to force docker download required images to
 Start server:
 
 ```
-$ sudo nohup runner.py >> ./output.log 2>&1 &
+$ sudo nohup python3.8 runner.py >> ./output.log 2>&1 &
 ```
 
 # Usage
@@ -44,14 +44,14 @@ $ sudo nohup runner.py >> ./output.log 2>&1 &
 Using simple HTTP JSON API:
 
 ```
-$ curl http://localhost:8080/run -H 'Content-Type: application/json' -d '{"lang":"python","code":"import math;print(math.pi)"}'
+$ curl http://localhost:8080/run -H 'Content-Type: application/json' -d '{"lang":"python","code":"import math\nprint(math.pi)"}'
 {"error": false, "timeout": false, "output": "3.141592653589793\n"}
 ```
 
 API input:
 
 - lang: language name, lowercase: `java`, `python`, `ruby`.
-- code: language code as string: `import math;print(math.pi)`
+- code: language code as JSON string: `import math\nprint(math.pi)`
 
 API output:
 

@@ -3,7 +3,7 @@
 
 'a remote code running service'
 
-import os, io, sys, json, shutil, subprocess, threading
+import os, sys, time, json, shutil, subprocess, threading
 from urllib import parse
 from http.server import ThreadingHTTPServer, BaseHTTPRequestHandler
 
@@ -144,9 +144,6 @@ class RunnerHTTPRequestHandler(BaseHTTPRequestHandler):
                 cmd = CONFIG.docker % (tempDir, img, cmd)
             print('[%s] command: %s' % (lang, cmd))
             result = run(cmd.split(' '), cwd=tempDir)
-            #
-            #
-            #
         except subprocess.TimeoutExpired:
             result = dict(timeout=True, error=False, output='')
         finally:

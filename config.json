@@ -2,7 +2,7 @@
     "ip": "$RCR_IP",
     "port": "$RCR_PORT",
     "tempdir": "$RCR_TEMP",
-    "docker": "sudo docker run -t --rm -w /app -v %s:/app %s %s",
+    "docker": "sudo docker run -t --rm --cpus=0.3 --sig-proxy=true -w /app -v %s:/app %s %s",
     "timeout": "$RCR_TIMEOUT",
     "languages": {
         "java": {
