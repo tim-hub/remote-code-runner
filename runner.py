@@ -32,9 +32,9 @@ def configHook(d):
 APP_DIR = os.path.dirname(__file__)
 
 # set default env if missing:
-os.environ.setdefault('RCR_IP', '127.0.0.1')
+os.environ.setdefault('RCR_IP', '0.0.0.0')
 os.environ.setdefault('RCR_PORT', '8080')
-os.environ.setdefault('RCR_TIMEOUT', '4')
+os.environ.setdefault('RCR_TIMEOUT', '5')
 os.environ.setdefault('RCR_TEMP', '/tmp/remote-code-runner')
 
 with open(os.path.join(APP_DIR, 'config.json'), 'r', encoding='utf-8') as f:
@@ -83,7 +83,7 @@ HTML_INDEX = '''
             <textarea id="code" name="code" style="width:90%;height:300px"></textarea>
             <p><button type="submit">Run</button></p>
         </form>
-        <p>Timeout: <span id="timeout"></span></p>
+        <p>Timeout: <span id="timeout" style="color:red"></span></p>
         <p>Response:</p>
         <pre><code id="response"></code></pre>
     </body>
