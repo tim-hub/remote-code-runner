@@ -103,6 +103,7 @@ def run(cmd, cwd, timeout):
     result = dict(error=False, timeout=False, truncated=False, output='')
     try:
         output = subprocess.check_output(cmd.split(' '), cwd=cwd, stderr=subprocess.STDOUT, timeout=timeout)
+        output = decode(output)
         if len(output) > 1024:
             result['output'] = output[:1024]
             result['truncated'] = True
