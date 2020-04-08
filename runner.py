@@ -34,7 +34,7 @@ APP_DIR = os.path.dirname(__file__)
 # set default env if missing:
 os.environ.setdefault('RCR_IP', '127.0.0.1')
 os.environ.setdefault('RCR_PORT', '8080')
-os.environ.setdefault('RCR_TIMEOUT', '3')
+os.environ.setdefault('RCR_TIMEOUT', '4')
 os.environ.setdefault('RCR_TEMP', '/tmp/remote-code-runner')
 
 with open(os.path.join(APP_DIR, 'config.json'), 'r', encoding='utf-8') as f:
@@ -46,7 +46,7 @@ HTML_INDEX = '''
 <html>
     <head>
         <title>Remote Code Runner</title>
-        <script src="http://lib.sinaapp.com/js/jquery/3.1.0/jquery-3.1.0.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
         <script>
             $(function () {
                 $('#codeForm').submit(function (e) {
@@ -54,7 +54,7 @@ HTML_INDEX = '''
                     $('#timeout').text('');
                     $('#response').text('');
                     var data = {
-                        lang: $('#lang').val(),
+                        language: $('#language').val(),
                         code: $('#code').val()
                     };
                     $.ajax({
@@ -77,7 +77,7 @@ HTML_INDEX = '''
     </head>
     <body>
         <form id="codeForm" action="/run">
-            <p><select id="lang" name="lang">
+            <p><select id="language" name="language">
 ''' + ''.join(sorted(['<option value="%s">%s</option>' % (lang, lang.capitalize()) for lang in CONFIG.languages.keys()])) + '''
             </select></p>
             <textarea id="code" name="code" style="width:90%;height:300px"></textarea>
