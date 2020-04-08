@@ -2,13 +2,13 @@
     "ip": "$RCR_IP",
     "port": "$RCR_PORT",
     "tempdir": "$RCR_TEMP",
-    "docker": "docker run -t --rm --cpus=0.5 -w /app -v %s:/app %s %s",
+    "docker": "docker run -t --rm --cpus=1 -w /app -v %s:/app %s %s",
     "timeout": "$RCR_TIMEOUT",
     "languages": {
         "java": {
             "file": "Main.java",
             "image": "openjdk:14-slim",
-            "command": "java -Xint -Xmx48m --source 14 --enable-preview -XX:+ShowCodeDetailsInExceptionMessages Main.java"
+            "command": "java -Xmx48m --source 14 --enable-preview -XX:+ShowCodeDetailsInExceptionMessages Main.java"
         },
         "python": {
             "file": "main.py",
