@@ -32,7 +32,7 @@ def configHook(d):
 APP_DIR = os.path.dirname(__file__)
 
 # set default env if missing:
-os.environ.setdefault('RCR_IP', '0.0.0.0')
+os.environ.setdefault('RCR_IP', '127.0.0.1')
 os.environ.setdefault('RCR_PORT', '8080')
 os.environ.setdefault('RCR_TIMEOUT', '5')
 os.environ.setdefault('RCR_TEMP', '/tmp/remote-code-runner')
