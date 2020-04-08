@@ -196,7 +196,7 @@ def main():
     if not os.path.isdir(CONFIG.tempdir):
         os.makedirs(CONFIG.tempdir)
     httpd = ThreadingHTTPServer((CONFIG.ip, int(CONFIG.port)), RunnerHTTPRequestHandler)
-    print('Ready for code runner on port %s...' % CONFIG.port)
+    print('Ready for code runner on %s:%s...' % (CONFIG.ip, CONFIG.port))
     print('Press Ctrl + C to exit...')
     httpd.serve_forever()
 
