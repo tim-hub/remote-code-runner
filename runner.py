@@ -104,8 +104,8 @@ def run(cmd, cwd, timeout):
     try:
         output = subprocess.check_output(cmd.split(' '), cwd=cwd, stderr=subprocess.STDOUT, timeout=timeout)
         output = decode(output)
-        if len(output) > 1024:
-            result['output'] = output[:1024]
+        if len(output) > 4000:
+            result['output'] = output[:4000]
             result['truncated'] = True
         else:
             result['output'] = output
