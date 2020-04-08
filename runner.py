@@ -127,7 +127,7 @@ class RunnerHTTPRequestHandler(BaseHTTPRequestHandler):
         if self.path != '/run':
             return self.responseError(404)
         body = json.loads(self.rfile.read(int(self.headers['Content-Length'])).decode('utf-8'))
-        lang = body['lang']
+        lang = body['language']
         code = body['code']
         if not lang in CONFIG.languages:
             raise KeyError('language not found: ' + lang)
