@@ -8,7 +8,7 @@
         "java": {
             "file": "Main.java",
             "image": "openjdk:14-slim",
-            "command": "java -Xmx32m --source 14 --enable-preview -XX:+ShowCodeDetailsInExceptionMessages Main.java"
+            "command": "java -Xint -Xmx48m --source 14 --enable-preview -XX:+ShowCodeDetailsInExceptionMessages Main.java"
         },
         "python": {
             "file": "main.py",
