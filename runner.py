@@ -100,13 +100,19 @@ def nextId():
         return globalIdCounter
 
 def run(cmd, cwd, timeout):
+    result = dict(error=False, timeout=False, truncated=False, output='')
     try:
         output = subprocess.check_output(cmd.split(' '), cwd=cwd, stderr=subprocess.STDOUT, timeout=timeout)
-        return dict(error=False, timeout=False, output=decode(output))
+        if len(output) > 1024:
+            result['output'] = output[:1024]
+            result['truncated'] = True
+        else:
+            result['output'] = output
     except subprocess.TimeoutExpired:
-        return dict(error=False, timeout=True, output='')
+        result['timeout'] = True
     except subprocess.CalledProcessError as e:
-        return dict(error=True, timeout=False, output=decode(e.output))
+        result['error'] = True
+    return result
 
 def decode(s):
     try:
