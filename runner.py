@@ -102,11 +102,11 @@ def nextId():
 def run(cmd, cwd, timeout):
     try:
         output = subprocess.check_output(cmd.split(' '), cwd=cwd, stderr=subprocess.STDOUT, timeout=timeout)
+        return dict(error=False, timeout=False, output=decode(output))
     except subprocess.TimeoutExpired:
         return dict(error=False, timeout=True, output='')
     except subprocess.CalledProcessError as e:
         return dict(error=True, timeout=False, output=decode(e.output))
-    return dict(error=False, timeout=False, output=decode(output))
 
 def decode(s):
     try:
