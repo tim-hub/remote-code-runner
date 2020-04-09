@@ -47,7 +47,7 @@ def main():
         warmUps.append('sudo docker run -t --rm %s ls' % conf['image'])
     writeFile(cwd, 'bin/warm-up-docker.sh', '\n'.join(warmUps))
 
-def run(cmd, msgOnError):
+def run(cmd, msgOnError=''):
     print('[execute] %s' % cmd)
     code = subprocess.call(cmd, shell=True)
     if code != 0:
