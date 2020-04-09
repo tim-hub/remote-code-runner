@@ -11,7 +11,7 @@ def main():
     print('Check system requirement:')
     run('sudo nginx -v', 'Try install nginx by command: sudo apt install nginx')
     run('sudo docker -v', 'Try install docker by command: sudo apt install docker.io')
-    #run('sudo python3.8 --version', 'Try install python 3.8 by command: sudo apt install python3.8')
+    run('sudo python3.8 --version', 'Try install python 3.8 by command: sudo apt install python3.8')
     settings = {}
     settings['$RCR_PATH'] = cwd
     settings['$WWW_DOMAIN'] = getInput('The www domain', 'www.example.com')
