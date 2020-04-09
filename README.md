@@ -1,6 +1,6 @@
 # Remote Code Runner
 
-Remote Code Runner is a simple service for running code on remote server side.
+Remote Code Runner is a simple service for running code on remote server side. Docker is used to execute untrusted code in a sandbox environment.
 
 # Install
 
