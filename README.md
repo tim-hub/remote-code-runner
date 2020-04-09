@@ -9,34 +9,44 @@ Environment:
 - Ubuntu Linux 18.04
 - Docker 19.x
 - Python 3.8
+- Nginx
 
 ```
-$ sudo apt install git docker.io python3.8
+$ sudo apt install git nginx docker.io python3.8
 ```
 
 Get source:
 
 ```
-$ git clone https://github.com/michaelliao/remote-code-runner.git 
+$ pwd
+/srv
+$ sudo git clone https://github.com/michaelliao/remote-code-runner.git
 ```
 
-Download required docker images:
+Copy your domain certificates to `/srv/remote-code-runner/ssl`:
+
+- `<domain name>.crt`
+- `<domain name>.key`
+
+Generate all:
 
 ```
-$ python3.8 list_images.py
-sudo docker run -t --rm openjdk:14-slim ls
-sudo docker run -t --rm python:3.8-slim ls
-sudo docker run -t --rm ruby:2.7-slim ls
-sudo docker run -t --rm node:13.12-slim ls
-sudo docker run -t --rm gcc:9.3 ls
+$ cd /srv/remote-code-runner
+$ sudo python3.8 generate.py
 ```
 
-Copy and execute the output commands to force docker download required images to local. This may take a long time.
+Download required docker images by warm up script (This may take a long time):
+
+```
+$ cd /srv/remote-code-runner/bin
+$ sudo sh warm-up-docker.sh
+```
 
 Start server:
 
 ```
-$ sudo nohup python3.8 runner.py >> ./output.log 2>&1 &
+$ cd /srv/remote-code-runner/bin
+$ sudo start-runner.sh
 ```
 
 # Usage

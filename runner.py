@@ -20,10 +20,19 @@ class Dict(dict):
     def __setattr__(self, key, value):
         self[key] = value
 
-APP_DIR = os.path.dirname(__file__)
+def configHook(d):
+    kw = dict()
+    for k, v in d.items():
+        if isinstance(v, str):
+            kw[k] = os.path.expandvars(v)
+        else:
+            kw[k] = v
+    return Dict(**kw)
+
+APP_DIR = os.path.dirname(os.path.normpath(os.path.abspath(__file__)))
 
 with open(os.path.join(APP_DIR, 'config.json'), 'r', encoding='utf-8') as f:
-    CONFIG = json.load(f, object_hook=lambda d: Dict(**d))
+    CONFIG = json.load(f, object_hook=configHook)
 
 print('load config:\n%s' % json.dumps(CONFIG, indent=4))
 
