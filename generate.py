@@ -14,8 +14,8 @@ def main():
     run('sudo python3.8 --version', 'Try install python 3.8 by command: sudo apt install python3.8')
     settings = {}
     settings['$RCR_PATH'] = cwd
-    settings['$WWW_DOMAIN'] = getInput('The www domain', 'www.example.com')
-    settings['$RCR_DOMAIN'] = getInput('Remote code runner domain', 'code.example.com')
+    settings['$WWW_DOMAIN'] = getInput('The www domain', 'www.itranswarp.com')
+    settings['$RCR_DOMAIN'] = getInput('Remote code runner domain', 'code.itranswarp.com')
     settings['$RCR_IP'] = getInput('Remote code runner listening IP', '127.0.0.1')
     settings['$RCR_PORT'] = getInput('Remote code runner listening port', '8080')
     settings['$RCR_TIMEOUT'] = getInput('Remote code runner execution timeout in seconds', '5')
@@ -32,6 +32,9 @@ def main():
     generateFile(cwd, 'config.json', 'bin/config.json', settings)
     print('generate nginx-runner.conf...')
     generateFile(cwd, 'nginx-runner.conf', 'bin/nginx-runner.conf', settings)
+    print('update nginx conf...')
+    run('sudo rm -f /etc/nginx/sites-enabled/nginx-runner.conf')
+    run('sudo ln -s %s/bin/nginx-runner.conf /etc/nginx/sites-enabled/nginx-runner.conf' % cwd)
     print('copy runner.py...')
     generateFile(cwd, 'runner.py', 'bin/runner.py', settings)
     print('generate start-runner.sh...')

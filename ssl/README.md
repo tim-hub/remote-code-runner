@@ -2,7 +2,7 @@
 
 Use domain name as file name.
 
-Example:
+Sample files:
 
-- code.example.com.crt
-- code.example.com.key
+- code.itranswarp.com.crt
+- code.itranswarp.com.key

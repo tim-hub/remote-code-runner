@@ -35,6 +35,12 @@ $ cd /srv/remote-code-runner
 $ sudo python3.8 generate.py
 ```
 
+Reload nginx:
+
+```
+$ sudo service nginx reload
+```
+
 Download required docker images by warm up script (This may take a long time):
 
 ```
