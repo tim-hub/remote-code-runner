@@ -40,8 +40,8 @@ def main():
     warmUps = []
     configJson = json.loads(readFile(cwd, 'config.json'))
     for lang, conf in configJson['languages'].items():
-        img = conf['image']
-        warmUps.append('sudo docker run -t --rm %s ls' % img)
+        warmUps.append('echo "sudo docker run -t --rm %s ls"' % conf['image'])
+        warmUps.append('sudo docker run -t --rm %s ls' % conf['image'])
     writeFile(cwd, 'bin/warm-up-docker.sh', '\n'.join(warmUps))
 
 def run(cmd, msgOnError):
