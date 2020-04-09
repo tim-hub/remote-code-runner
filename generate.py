@@ -9,13 +9,10 @@ def main():
     cwd = os.path.dirname(os.path.normpath(os.path.abspath(__file__)))
     print('Set remote code runner path = %s' % cwd)
     print('Check system requirement:')
-    run('sudo nginx -v', 'Try install nginx by command: sudo apt install nginx')
     run('sudo docker -v', 'Try install docker by command: sudo apt install docker.io')
     run('sudo python3.8 --version', 'Try install python 3.8 by command: sudo apt install python3.8')
     settings = {}
     settings['$RCR_PATH'] = cwd
-    settings['$WWW_DOMAIN'] = getInput('The www domain', 'www.itranswarp.com')
-    settings['$RCR_DOMAIN'] = getInput('Remote code runner domain', 'code.itranswarp.com')
     settings['$RCR_IP'] = getInput('Remote code runner listening IP', '127.0.0.1')
     settings['$RCR_PORT'] = getInput('Remote code runner listening port', '8080')
     settings['$RCR_TIMEOUT'] = getInput('Remote code runner execution timeout in seconds', '5')
@@ -23,27 +20,15 @@ def main():
     yn = input('Generate release? [yN] ')
     if yn.lower() != 'y':
         exit(1)
-    print('check ssl certificates...')
-    certFiles = [settings['$RCR_DOMAIN'] + '.crt', settings['$RCR_DOMAIN'] + '.key']
-    for certFile in certFiles:
-        if not os.path.isfile(os.path.join(cwd, 'ssl', certFile)):
-            print('WARNING: %s not found in %s/ssl.' % (certFile, cwd))
     print('generate config.json...')
     generateFile(cwd, 'src/config.json', 'bin/config.json', settings)
-    print('generate nginx-runner.conf...')
-    generateFile(cwd, 'src/nginx-runner.conf', 'bin/nginx-runner.conf', settings)
-    print('update nginx conf...')
-    run('sudo rm -f /etc/nginx/sites-enabled/nginx-runner.conf')
-    run('sudo ln -s %s/bin/nginx-runner.conf /etc/nginx/sites-enabled/nginx-runner.conf' % cwd)
-    print('reload nginx...')
-    run('sudo service nginx reload')
     print('copy runner.py...')
     generateFile(cwd, 'src/runner.py', 'bin/runner.py', settings)
     print('generate start-runner.sh...')
     generateFile(cwd, 'src/start-runner.sh', 'bin/start-runner.sh', settings)
     print('generate warm-up-docker.sh...')
     warmUps = []
-    configJson = json.loads(readFile(cwd, 'config.json'))
+    configJson = json.loads(readFile(cwd, 'src/config.json'))
     for lang, conf in configJson['languages'].items():
         warmUps.append('echo ">>> sudo docker run -t --rm %s ls"' % conf['image'])
         warmUps.append('sudo docker run -t --rm %s ls' % conf['image'])

@@ -9,10 +9,9 @@ Environment:
 - Ubuntu Linux 18.04
 - Docker 19.x
 - Python 3.8
-- Nginx
 
 ```
-$ sudo apt install git nginx docker.io python3.8
+$ sudo apt install git docker.io python3.8
 ```
 
 Get source:
@@ -23,19 +22,14 @@ $ pwd
 $ sudo git clone https://github.com/michaelliao/remote-code-runner.git
 ```
 
-Copy your domain certificates to `/srv/remote-code-runner/ssl`:
-
-- `<domain name>.crt`
-- `<domain name>.key`
-
-Generate all:
+Generate all from source:
 
 ```
 $ cd /srv/remote-code-runner
 $ sudo python3.8 generate.py
 ```
 
-Download required docker images by warm up script (This may take a long time):
+Download required docker images by warm up script (this may take a long time):
 
 ```
 $ cd /srv/remote-code-runner/bin
@@ -54,7 +48,7 @@ $ sudo start-runner.sh
 Using simple HTTP JSON API:
 
 ```
-$ curl http://localhost:8080/run -H 'Content-Type: application/json' -d '{"lang":"python","code":"import math\nprint(math.pi)"}'
+$ curl http://server-ip:8080/run -H 'Content-Type: application/json' -d '{"language":"python","code":"import math\nprint(math.pi)"}'
 {"error": false, "timeout": false, "truncated": false, "output": "3.141592653589793\n"}
 ```
 
@@ -75,9 +69,10 @@ API output:
 How code are executed on the remote server side:
 
 1. Http server `runner.py` got language name and code from API;
-2. Write code into a temperary directory;
+2. Write code into a temperary directory like `/tmp/remote-code-runner/1`;
 3. Execute command like `sudo docker run -t --rm -w /app -v /tmp/dir:/app <image-tag> python3 main.py`;
-4. Write output into API response.
+4. Write output into API response;
+5. Clean up temperary directory.
 
 # Limitation
 
