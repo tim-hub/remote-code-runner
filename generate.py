@@ -29,21 +29,23 @@ def main():
         if not os.path.isfile(os.path.join(cwd, 'ssl', certFile)):
             print('WARNING: %s not found in %s/ssl.' % (certFile, cwd))
     print('generate config.json...')
-    generateFile(cwd, 'config.json', 'bin/config.json', settings)
+    generateFile(cwd, 'src/config.json', 'bin/config.json', settings)
     print('generate nginx-runner.conf...')
-    generateFile(cwd, 'nginx-runner.conf', 'bin/nginx-runner.conf', settings)
+    generateFile(cwd, 'src/nginx-runner.conf', 'bin/nginx-runner.conf', settings)
     print('update nginx conf...')
     run('sudo rm -f /etc/nginx/sites-enabled/nginx-runner.conf')
     run('sudo ln -s %s/bin/nginx-runner.conf /etc/nginx/sites-enabled/nginx-runner.conf' % cwd)
+    print('reload nginx...')
+    run('sudo service nginx reload')
     print('copy runner.py...')
-    generateFile(cwd, 'runner.py', 'bin/runner.py', settings)
+    generateFile(cwd, 'src/runner.py', 'bin/runner.py', settings)
     print('generate start-runner.sh...')
-    generateFile(cwd, 'start-runner.sh', 'bin/start-runner.sh', settings)
+    generateFile(cwd, 'src/start-runner.sh', 'bin/start-runner.sh', settings)
     print('generate warm-up-docker.sh...')
     warmUps = []
     configJson = json.loads(readFile(cwd, 'config.json'))
     for lang, conf in configJson['languages'].items():
-        warmUps.append('echo "sudo docker run -t --rm %s ls"' % conf['image'])
+        warmUps.append('echo ">>> sudo docker run -t --rm %s ls"' % conf['image'])
         warmUps.append('sudo docker run -t --rm %s ls' % conf['image'])
     writeFile(cwd, 'bin/warm-up-docker.sh', '\n'.join(warmUps))
 

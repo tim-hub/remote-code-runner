@@ -35,12 +35,6 @@ $ cd /srv/remote-code-runner
 $ sudo python3.8 generate.py
 ```
 
-Reload nginx:
-
-```
-$ sudo service nginx reload
-```
-
 Download required docker images by warm up script (This may take a long time):
 
 ```
@@ -122,4 +116,4 @@ The key `node` is the language name.
 $ sudo docker run -t --rm node:13.12-slim ls
 ```
 
-3. Restart `runner.py`.
+3. Restart `start-runner.sh`.
