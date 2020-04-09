@@ -1,3 +1,9 @@
+# skip bin and ssl:
+
+bin/
+ssl/*.crt
+ssl/*.key
+
 # Docker.gitignore #
 
 docker/app/log
@@ -42,7 +48,6 @@ buildNumber.properties
 *.pydevproject
 .metadata
 .gradle
-bin/
 tmp/
 *.tmp
 *.bak
