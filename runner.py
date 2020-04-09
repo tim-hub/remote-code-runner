@@ -20,25 +20,10 @@ class Dict(dict):
     def __setattr__(self, key, value):
         self[key] = value
 
-def configHook(d):
-    kw = dict()
-    for k, v in d.items():
-        if isinstance(v, str):
-            kw[k] = os.path.expandvars(v)
-        else:
-            kw[k] = v
-    return Dict(**kw)
-
 APP_DIR = os.path.dirname(__file__)
 
-# set default env if missing:
-os.environ.setdefault('RCR_IP', '127.0.0.1')
-os.environ.setdefault('RCR_PORT', '8080')
-os.environ.setdefault('RCR_TIMEOUT', '5')
-os.environ.setdefault('RCR_TEMP', '/tmp/remote-code-runner')
-
 with open(os.path.join(APP_DIR, 'config.json'), 'r', encoding='utf-8') as f:
-    CONFIG = json.load(f, object_hook=configHook)
+    CONFIG = json.load(f, object_hook=lambda d: Dict(**d))
 
 print('load config:\n%s' % json.dumps(CONFIG, indent=4))
 

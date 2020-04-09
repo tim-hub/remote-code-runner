@@ -45,18 +45,19 @@ Using simple HTTP JSON API:
 
 ```
 $ curl http://localhost:8080/run -H 'Content-Type: application/json' -d '{"lang":"python","code":"import math\nprint(math.pi)"}'
-{"error": false, "timeout": false, "output": "3.141592653589793\n"}
+{"error": false, "timeout": false, "truncated": false, "output": "3.141592653589793\n"}
 ```
 
 API input:
 
-- lang: language name, lowercase: `java`, `python`, `ruby`.
+- language: language name, lowercase: `java`, `python`, `ruby`.
 - code: language code as JSON string: `import math\nprint(math.pi)`
 
 API output:
 
-- timeout: boolean, is timeout.
-- error: boolean, is error output.
+- timeout: boolean, is execution timeout.
+- error: boolean, is error output. e.g. compile failed or syntax error.
+- truncated: boolean, is output was truncated for too many characters.
 - output: string, the output of execution.
 
 # Execution
@@ -72,6 +73,10 @@ How code are executed on the remote server side:
 
 - Multiple files are not supported.
 - There is no way to read input from console. Any user input code will cause timeout.
+
+# Security
+
+Remote code runner should only be served in private network. User identity check, rate limit must be done in application server or reverse proxy like Nginx.
 
 # Extension
 
