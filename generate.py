@@ -9,9 +9,9 @@ def main():
     cwd = os.path.dirname(os.path.normpath(os.path.abspath(__file__)))
     print('Set remote code runner path = %s' % cwd)
     print('Check system requirement:')
-    print('sudo nginx -v', 'Try install nginx by command: sudo apt install nginx')
-    print('sudo docker -v', 'Try install docker by command: sudo apt install docker.io')
-    print('sudo python3.8 --version', 'Try install python 3.8 by command: sudo apt install python3.8')
+    run('sudo nginx -v', 'Try install nginx by command: sudo apt install nginx')
+    run('sudo docker -v', 'Try install docker by command: sudo apt install docker.io')
+    #run('sudo python3.8 --version', 'Try install python 3.8 by command: sudo apt install python3.8')
     settings = {}
     settings['$RCR_PATH'] = cwd
     settings['$WWW_DOMAIN'] = getInput('The www domain', 'www.example.com')
@@ -20,13 +20,13 @@ def main():
     settings['$RCR_PORT'] = getInput('Remote code runner listening port', '8080')
     settings['$RCR_TIMEOUT'] = getInput('Remote code runner execution timeout in seconds', '5')
     settings['$RCR_TEMP'] = getInput('Remote code runner temporary directory', '/tmp/remote-code-runner')
-    yn = input('Generate release? [yN]')
+    yn = input('Generate release? [yN] ')
     if yn.lower() != 'y':
         exit(1)
     print('check ssl certificates...')
     certFiles = [settings['$RCR_DOMAIN'] + '.crt', settings['$RCR_DOMAIN'] + '.key']
     for certFile in certFiles:
-        if not os.path.isfile(cwd, 'ssl', certFile):
+        if not os.path.isfile(os.path.join(cwd, 'ssl', certFile)):
             print('WARNING: %s not found in %s/ssl.' % (certFile, cwd))
     print('generate config.json...')
     generateFile(cwd, 'config.json', 'bin/config.json', settings)
@@ -42,7 +42,7 @@ def main():
     for lang, conf in configJson['languages'].items():
         img = conf['image']
         warmUps.append('sudo docker run -t --rm %s ls' % img)
-    writeFile(cwd, 'bin/warm-up-docker.sh', warmUps.join('\n'))
+    writeFile(cwd, 'bin/warm-up-docker.sh', '\n'.join(warmUps))
 
 def run(cmd, msgOnError):
     print('[execute] %s' % cmd)
@@ -54,8 +54,9 @@ def run(cmd, msgOnError):
 def getInput(prompt, default=None):
     if default:
         s = input('%s [%s]: ' % (prompt, default)).strip()
-        if len(s) == '':
-            return default
+        if s == '':
+            s = default
+        return s
     else:
         s = input('%s: ' % prompt).strip()
         return s
